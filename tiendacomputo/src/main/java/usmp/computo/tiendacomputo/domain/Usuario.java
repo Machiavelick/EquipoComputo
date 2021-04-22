@@ -9,7 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class Employee{
+public class Usuario{
 
   
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -17,8 +17,8 @@ public class Employee{
 	@Id
 	private Integer id;
 
-    private String Producto;
-    private Double Precio;
+    private String Usuario;
+    private String Password;
 
     public Integer getId() {
         return this.id;
@@ -28,22 +28,21 @@ public class Employee{
         this.id = id;
     }
 
-
-    public String getProducto() {
-        return this.Producto;
+    public String getUsuario() {
+        return this.Usuario;
     }
 
-    public void setProducto(String producto) {
-        this.Producto = producto;
+    public void setUsuario(String Usuario) {
+        this.Usuario = Usuario;
     }
 
-    public Double getPrecio() {
-        return this.Precio;
+    public String getPassword() {
+        return this.Password;
     }
 
-    public void setPrecio(Double precio) {
-        this.Precio = precio;
-  
+    public void setPassword(String Password) {
+        this.Password = Password;
     }
+
 
 }
