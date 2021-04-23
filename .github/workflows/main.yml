@@ -30,9 +30,9 @@ jobs:
 
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           
-          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+          heroku_app_name: ${{ secrets.usmpcomputo-api }}
 
-          dockerfile_directory: ./demoapi
+          dockerfile_directory: ./tiendacomputo
 
           dockerfile_name: DockerFile
 
