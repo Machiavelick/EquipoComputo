@@ -6,8 +6,13 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+  HEROKU_APP_NAME: ${{ 'usmpcomputo-api' }}
+  HEROKU_PSS_DB: ${{ secrets.HEROKU_PSS_DB }}
+
 jobs:
-  build_webapi:
+  build_webapp:
     runs-on: ubuntu-latest
     steps:
 
@@ -19,24 +24,17 @@ jobs:
       with:
         java-version: 1.8
     
-    - name: Build with Maven Backend
-      run: mvn -B package --file tiendacomputo/pom.xml -DHEROKU_PSS_DB=${{ secrets.HEROKU_PSS_DB }} -DPORT=${{ secrets.PORT }}
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml -Dpassword_db_heroku=$HEROKU_PSS_DB
 
-    - name: Build, Push and Release a Docker container to Heroku Backend
-      uses: gonuit/heroku-docker-deploy@v1.3.2 
-      with:
+    - name: Docker login
+      run: docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
 
-          email: ${{ secrets.HEROKU_EMAIL }}
+    - name: Docker Build
+      run: docker build .
 
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          
-          heroku_app_name: ${{ secrets.usmpcomputo-api }}
-
-          dockerfile_directory: ./tiendacomputo
-
-          dockerfile_name: DockerFile
-
-          docker_options: "--no-cache"
-
-          process_type: web
+    - name: Publish
+      run: |
+        heroku container:push web -a $HEROKU_APP_NAME
+        heroku container:release web -a $HEROKU_APP_NAME
  
